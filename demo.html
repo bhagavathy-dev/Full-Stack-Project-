@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full Stack User Management System</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    
+    :root {
+      --bg-dark: #0a0a0f;
+      --surface: #12121a;
+      --text-primary: #e4e4e7;
+      --accent-green: #10b981;
+      --accent-blue: #3b82f6;
+    }
+    
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg-dark);
+    }
+    
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    
+    .gradient-text {
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .card-glow {
+      background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+    
+    .tech-badge {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .tech-badge:hover {
+      background: rgba(16, 185, 129, 0.2);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+    }
+    
+    .api-card {
+      background: rgba(18, 18, 26, 0.8);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    .api-card:hover {
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateX(4px);
+    }
+    
+    .method-get { color: #10b981; background: rgba(16, 185, 129, 0.15); }
+    .method-post { color: #3b82f6; background: rgba(59, 130, 246, 0.15); }
+    .method-put { color: #f59e0b; background: rgba(245, 158, 11, 0.15); }
+    .method-delete { color: #ef4444; background: rgba(239, 68, 68, 0.15); }
+    
+    .feature-icon {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    
+    .tab-btn {
+      transition: all 0.3s ease;
+      border-bottom: 2px solid transparent;
+    }
+    
+    .tab-btn.active {
+      color: #10b981;
+      border-bottom-color: #10b981;
+    }
+    
+    .tab-btn:hover:not(.active) {
+      color: #a1a1aa;
+    }
+    
+    .code-block {
+      background: #0d0d12;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+    
+    .animate-in {
+      animation: fadeSlideIn 0.6s ease forwards;
+    }
+    
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .pulse-dot {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .grid-bg {
+      background-image: 
+        linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    .scroll-container {
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full text-zinc-300">
+  <div class="h-full scroll-container grid-bg">
+   <div class="max-w-6xl mx-auto px-6 py-12"><!-- Header Section -->
+    <header class="text-center mb-16 animate-in">
+     <div class="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/30"><span class="w-2 h-2 rounded-full bg-emerald-500 pulse-dot"></span> <span class="text-emerald-400 text-sm mono">Full Stack Project</span>
+     </div>
+     <h1 id="project-title" class="text-4xl md:text-5xl font-bold mb-4 gradient-text">User Management System</h1>
+     <p id="project-subtitle" class="text-xl text-zinc-400 max-w-2xl mx-auto">A comprehensive web application enabling user registration, login, and profile management with RESTful API integration</p>
+    </header><!-- Tech Stack -->
+    <section class="mb-16 animate-in" style="animation-delay: 0.1s;">
+     <h2 class="text-sm uppercase tracking-wider text-zinc-500 mb-6 text-center">Tech Stack</h2>
+     <div class="flex flex-wrap justify-center gap-3"><span class="tech-badge px-4 py-2 rounded-lg text-emerald-400 mono text-sm flex items-center gap-2">
+       <svg class="w-5 h-5" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+       </svg> React </span> <span class="tech-badge px-4 py-2 rounded-lg text-emerald-400 mono text-sm flex items-center gap-2">
+       <svg class="w-5 h-5" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+       </svg> Node.js </span> <span class="tech-badge px-4 py-2 rounded-lg text-emerald-400 mono text-sm flex items-center gap-2">
+       <svg class="w-5 h-5" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" /><path d="M12 6v6l4.5 2.7.8-1.3-3.8-2.2V6z" />
+       </svg> Express </span> <span class="tech-badge px-4 py-2 rounded-lg text-emerald-400 mono text-sm flex items-center gap-2">
+       <svg class="w-5 h-5" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+       </svg> MongoDB </span> <span class="tech-badge px-4 py-2 rounded-lg text-blue-400 mono text-sm flex items-center gap-2">
+       <svg class="w-5 h-5" viewbox="0 0 24 24" fill="currentColor">
+        <path d="M4 4h16v16H4V4zm2 2v12h12V6H6z" />
+       </svg> REST API </span>
+     </div>
+    </section><!-- Interactive Tabs -->
+    <section class="mb-12">
+     <div class="flex justify-center gap-8 mb-8 border-b border-zinc-800 pb-4"><button class="tab-btn active text-zinc-400 pb-2 px-2" data-tab="overview">Overview</button> <button class="tab-btn text-zinc-400 pb-2 px-2" data-tab="api">API Endpoints</button> <button class="tab-btn text-zinc-400 pb-2 px-2" data-tab="architecture">Architecture</button> <button class="tab-btn text-zinc-400 pb-2 px-2" data-tab="demo">Live Demo</button>
+     </div><!-- Overview Tab -->
+     <div id="tab-overview" class="tab-content">
+      <div class="grid md:grid-cols-2 gap-6">
+       <div class="card-glow rounded-2xl p-6">
+        <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-2">User Registration</h3>
+        <p class="text-zinc-400 text-sm">Secure signup with email verification, password hashing using bcrypt, and input validation</p>
+       </div>
+       <div class="card-glow rounded-2xl p-6">
+        <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-2">Authentication</h3>
+        <p class="text-zinc-400 text-sm">JWT-based authentication with secure token management and session handling</p>
+       </div>
+       <div class="card-glow rounded-2xl p-6">
+        <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-2">MongoDB Integration</h3>
+        <p class="text-zinc-400 text-sm">Mongoose ODM for schema validation, data modeling, and efficient database queries</p>
+       </div>
+       <div class="card-glow rounded-2xl p-6">
+        <div class="feature-icon w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+         <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+         </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-white mb-2">Form Validation</h3>
+        <p class="text-zinc-400 text-sm">Client &amp; server-side validation with comprehensive error handling and user feedback</p>
+       </div>
+      </div>
+     </div><!-- API Tab -->
+     <div id="tab-api" class="tab-content hidden">
+      <div class="space-y-3">
+       <div class="api-card rounded-xl p-4 flex items-center gap-4"><span class="method-post px-3 py-1 rounded mono text-xs font-semibold">POST</span> <code class="mono text-sm text-zinc-300 flex-1">/api/auth/register</code> <span class="text-zinc-500 text-sm">Create new user account</span>
+       </div>
+       <div class="api-card rounded-xl p-4 flex items-center gap-4"><span class="method-post px-3 py-1 rounded mono text-xs font-semibold">POST</span> <code class="mono text-sm text-zinc-300 flex-1">/api/auth/login</code> <span class="text-zinc-500 text-sm">Authenticate user</span>
+       </div>
+       <div class="api-card rounded-xl p-4 flex items-center gap-4"><span class="method-get px-3 py-1 rounded mono text-xs font-semibold">GET</span> <code class="mono text-sm text-zinc-300 flex-1">/api/users/:id</code> <span class="text-zinc-500 text-sm">Get user profile</span>
+       </div>
+       <div class="api-card rounded-xl p-4 flex items-center gap-4"><span class="method-put px-3 py-1 rounded mono text-xs font-semibold">PUT</span> <code class="mono text-sm text-zinc-300 flex-1">/api/users/:id</code> <span class="text-zinc-500 text-sm">Update user profile</span>
+       </div>
+       <div class="api-card rounded-xl p-4 flex items-center gap-4"><span class="method-delete px-3 py-1 rounded mono text-xs font-semibold">DELETE</span> <code class="mono text-sm text-zinc-300 flex-1">/api/users/:id</code> <span class="text-zinc-500 text-sm">Delete user account</span>
+       </div>
+       <div class="api-card rounded-xl p-4 flex items-center gap-4"><span class="method-get px-3 py-1 rounded mono text-xs font-semibold">GET</span> <code class="mono text-sm text-zinc-300 flex-1">/api/users</code> <span class="text-zinc-500 text-sm">List all users (admin)</span>
+       </div>
+      </div>
+     </div><!-- Architecture Tab -->
+     <div id="tab-architecture" class="tab-content hidden">
+      <div class="code-block rounded-2xl p-6 overflow-x-auto">
+       <pre class="mono text-sm leading-relaxed"><span class="text-zinc-500">// Project Structure</span>
+<span class="text-blue-400">├── client/</span>                  <span class="text-zinc-600"># React Frontend</span>
+<span class="text-zinc-400">│   ├── src/</span>
+<span class="text-zinc-400">│   │   ├── components/</span>      <span class="text-zinc-600"># Reusable UI components</span>
+<span class="text-zinc-400">│   │   ├── pages/</span>           <span class="text-zinc-600"># Route pages</span>
+<span class="text-zinc-400">│   │   ├── services/</span>        <span class="text-zinc-600"># API service layer</span>
+<span class="text-zinc-400">│   │   └── context/</span>         <span class="text-zinc-600"># Auth context provider</span>
+<span class="text-blue-400">├── server/</span>                  <span class="text-zinc-600"># Node.js Backend</span>
+<span class="text-zinc-400">│   ├── controllers/</span>         <span class="text-zinc-600"># Request handlers</span>
+<span class="text-zinc-400">│   ├── models/</span>              <span class="text-zinc-600"># Mongoose schemas</span>
+<span class="text-zinc-400">│   ├── routes/</span>              <span class="text-zinc-600"># API route definitions</span>
+<span class="text-zinc-400">│   ├── middleware/</span>          <span class="text-zinc-600"># Auth &amp; validation</span>
+<span class="text-zinc-400">│   └── config/</span>              <span class="text-zinc-600"># Database &amp; env config</span>
+<span class="text-emerald-400">└── package.json</span>             <span class="text-zinc-600"># Dependencies</span>
+            </pre>
+      </div>
+      <div class="mt-6 grid grid-cols-3 gap-4">
+       <div class="text-center p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+        <div class="text-2xl font-bold text-emerald-400">
+         React
+        </div>
+        <div class="text-xs text-zinc-500 mt-1">
+         Frontend SPA
+        </div>
+       </div>
+       <div class="text-center p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+        <div class="text-2xl font-bold text-blue-400">
+         Express
+        </div>
+        <div class="text-xs text-zinc-500 mt-1">
+         REST API Server
+        </div>
+       </div>
+       <div class="text-center p-4 rounded-xl bg-purple-500/10 border border-purple-500/20">
+        <div class="text-2xl font-bold text-purple-400">
+         MongoDB
+        </div>
+        <div class="text-xs text-zinc-500 mt-1">
+         NoSQL Database
+        </div>
+       </div>
+      </div>
+     </div><!-- Demo Tab -->
+     <div id="tab-demo" class="tab-content hidden">
+      <div class="card-glow rounded-2xl p-8 max-w-md mx-auto">
+       <h3 class="text-xl font-semibold text-white mb-6 text-center">Sample Login Form</h3>
+       <div class="text-xs text-amber-400/80 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2 mb-6 text-center">
+        ⚠️ Demo Only - Not connected to backend
+       </div>
+       <form id="demo-form" class="space-y-4">
+        <div><label class="block text-sm text-zinc-400 mb-2">Email</label> <input type="email" placeholder="user@example.com" class="w-full px-4 py-3 rounded-lg bg-zinc-900/50 border border-zinc-700 text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none transition-colors">
+        </div>
+        <div><label class="block text-sm text-zinc-400 mb-2">Password</label> <input type="password" placeholder="••••••••" class="w-full px-4 py-3 rounded-lg bg-zinc-900/50 border border-zinc-700 text-white placeholder-zinc-500 focus:border-emerald-500 focus:outline-none transition-colors">
+        </div><button type="submit" class="w-full py-3 rounded-lg bg-gradient-to-r from-emerald-500 to-blue-500 text-white font-semibold hover:opacity-90 transition-opacity"> Sign In </button>
+       </form>
+       <p id="demo-message" class="mt-4 text-center text-sm text-emerald-400 hidden">✓ Form validated successfully!</p>
+      </div>
+     </div>
+    </section><!-- Footer Stats -->
+    <footer class="text-center pt-8 border-t border-zinc-800">
+     <div class="flex justify-center gap-12 text-sm">
+      <div><span class="text-2xl font-bold text-emerald-400">5+</span>
+       <p class="text-zinc-500 mt-1">API Endpoints</p>
+      </div>
+      <div><span class="text-2xl font-bold text-blue-400">JWT</span>
+       <p class="text-zinc-500 mt-1">Auth System</p>
+      </div>
+      <div><span class="text-2xl font-bold text-purple-400">CRUD</span>
+       <p class="text-zinc-500 mt-1">Operations</p>
+      </div>
+     </div>
+    </footer>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      project_title: 'User Management System',
+      project_subtitle: 'A comprehensive web application enabling user registration, login, and profile management with RESTful API integration',
+      background_color: '#0a0a0f',
+      surface_color: '#12121a',
+      text_color: '#e4e4e7',
+      primary_color: '#10b981',
+      secondary_color: '#3b82f6'
+    };
+
+    // Tab functionality
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.add('hidden');
+        });
+        
+        const tabId = 'tab-' + btn.dataset.tab;
+        document.getElementById(tabId).classList.remove('hidden');
+      });
+    });
+
+    // Demo form
+    document.getElementById('demo-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('demo-message');
+      msg.classList.remove('hidden');
+      setTimeout(() => msg.classList.add('hidden'), 3000);
+    });
+
+    // Element SDK initialization
+    async function onConfigChange(config) {
+      const title = document.getElementById('project-title');
+      const subtitle = document.getElementById('project-subtitle');
+      
+      if (title) title.textContent = config.project_title || defaultConfig.project_title;
+      if (subtitle) subtitle.textContent = config.project_subtitle || defaultConfig.project_subtitle;
+      
+      document.documentElement.style.setProperty('--bg-dark', config.background_color || defaultConfig.background_color);
+      document.documentElement.style.setProperty('--surface', config.surface_color || defaultConfig.surface_color);
+      document.documentElement.style.setProperty('--text-primary', config.text_color || defaultConfig.text_color);
+      document.documentElement.style.setProperty('--accent-green', config.primary_color || defaultConfig.primary_color);
+      document.documentElement.style.setProperty('--accent-blue', config.secondary_color || defaultConfig.secondary_color);
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
+          },
+          {
+            get: () => config.surface_color || defaultConfig.surface_color,
+            set: (value) => { config.surface_color = value; window.elementSdk.setConfig({ surface_color: value }); }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
+          },
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => { config.primary_color = value; window.elementSdk.setConfig({ primary_color: value }); }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => { config.secondary_color = value; window.elementSdk.setConfig({ secondary_color: value }); }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ['project_title', config.project_title || defaultConfig.project_title],
+        ['project_subtitle', config.project_subtitle || defaultConfig.project_subtitle]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d17ac59f359802c',t:'MTc3MTY5MTg5OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
